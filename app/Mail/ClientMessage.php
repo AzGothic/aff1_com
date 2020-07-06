@@ -16,14 +16,20 @@ class ClientMessage extends Mailable
     protected $msg;
 
     /**
-     * Create a new message instance.
+     * @var \stdClass $client
+     */
+    protected $client;
+
+    /**
+     * Create a new message and client instances.
      *
      * @param \stdClass $msg
-     * @return void
+     * @param \stdClass $client
      */
-    public function __construct(\stdClass $msg)
+    public function __construct(\stdClass $msg, \stdClass $client)
     {
-        $this->msg = $msg;
+        $this->msg    = $msg;
+        $this->client = $client;
     }
 
     /**
@@ -34,10 +40,10 @@ class ClientMessage extends Mailable
     public function build()
     {
         return $this->markdown('emails.client.message')
-            ->to($this->msg->client_email, $this->msg->client_name)
-            ->subject($this->msg->message_subject)
+            ->to($this->client->email, $this->client->name)
+            ->subject($this->msg->subject)
             ->with([
-                'content' => $this->msg->message_body,
+                'content' => $this->msg->body,
             ]);
     }
 }
