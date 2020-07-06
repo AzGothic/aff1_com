@@ -14,8 +14,10 @@ class UpdateMessagesScheduleTable extends Migration
     public function up()
     {
         Schema::table('messages_schedule', function (Blueprint $table) {
-            $table->dropIndex(['client_id']);
+            $table->dropIndex(['client_id', 'message_id', 'time']);
             $table->dropColumn('client_id');
+            $table->index(['message_id']);
+            $table->index(['time']);
         });
     }
 
